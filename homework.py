@@ -156,8 +156,6 @@ def read_package(workout_type: str, data: list) -> Training:
         'RUN': Running,
         'WLK': SportsWalking
     }
-    if workout_type not in training_dict:
-        print(f'Неизвестный тип тренировки: {workout_type}')
 
     return training_dict[workout_type](*data)
 
