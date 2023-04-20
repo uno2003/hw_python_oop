@@ -158,7 +158,7 @@ def read_package(workout_type: str, data: list[int]) -> Training:
         'WLK': SportsWalking
     }
     if workout_type not in training:
-        return print(f'Тип тренеровки: {training[workout_type]}, не найлен')
+        return print(f'Тип тренеровки: {training[workout_type]}, не найден')
     return training[workout_type](*data)
 
 
