@@ -33,7 +33,7 @@ class Training:
 
     M_IN_KM: ClassVar[int] = 1000
     LEN_STEP: ClassVar[float] = 0.65
-    MIN_IN_HOUR: ClassVar[float] = 60
+    MIN_IN_HOUR: ClassVar[float] = 60.0
 
     action: int
     duration: float
@@ -50,7 +50,7 @@ class Training:
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
         raise NotImplementedError('Определите get_spent_calories в %s.'
-                                  % (self.__class__.__name__))
+                                  % (type(self).__name__))
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -70,7 +70,7 @@ class Running(Training):
     CALORIES_MEAN_SPEED_SHIFT коэффициент для сдвига средней скорости
     """
 
-    CALORIES_MEAN_SPEED_MULTIPLIER: float = 18
+    CALORIES_MEAN_SPEED_MULTIPLIER: float = 18.0
     CALORIES_MEAN_SPEED_SHIFT: float = 1.79
 
     def get_spent_calories(self) -> float:
@@ -99,8 +99,8 @@ class SportsWalking(Training):
     CALORIES_WEIGHT_MULTIPLIER: ClassVar[float] = 0.035
     CALORIES_SPEED_HEIGHT_MULTIPLIER: ClassVar[float] = 0.029
     KMH_IN_MSEC: ClassVar[float] = 0.278
-    CM_IN_M: ClassVar[int] = 100
-    POWER: ClassVar[int] = 2
+    CM_IN_M: ClassVar[float] = 100.0
+    POWER: ClassVar[float] = 2.0
 
     action: int
     duration: float
@@ -129,7 +129,7 @@ class Swimming(Training):
 
     LEN_STEP: ClassVar[float] = 1.38
     CALORIES_MEAN_SPEED_SHIFT: ClassVar[float] = 1.1
-    CALORIES_WEIGHT_MULTIPLIER: ClassVar[float] = 2
+    CALORIES_WEIGHT_MULTIPLIER: ClassVar[float] = 2.0
 
     action: int
     duration: float
@@ -157,9 +157,10 @@ def read_package(workout_type: str, data: list[int]) -> Training:
         'RUN': Running,
         'WLK': SportsWalking
     }
-    if workout_type not in training:
-        return print(f'Тип тренеровки: {training[workout_type]}, не найден')
-    return training[workout_type](*data)
+    try:
+        return training[workout_type](*data)
+    except KeyError as error_message:
+        print(f'Тип тренеровки, {error_message} не найден')
 
 
 def main(training: Training) -> None:
